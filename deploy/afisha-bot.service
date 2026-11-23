@@ -1,0 +1,27 @@
+[Unit]
+Description=Афиша Казачинско-Пировского округа (MAX bot)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=afisha
+Group=afisha
+WorkingDirectory=/opt/afisha
+EnvironmentFile=/opt/afisha/.env
+ExecStart=/opt/afisha/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8080 --proxy-headers
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=afisha-bot
+
+# Минимальные привилегии
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/afisha/data
+
+[Install]
+WantedBy=multi-user.target
